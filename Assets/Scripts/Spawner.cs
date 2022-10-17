@@ -28,6 +28,8 @@ public class Spawner : MonoBehaviour
     [SerializeField] TMP_Text counterText;
     private int counter;
 
+    [SerializeField] private Transform _spawnPoint;
+
     void Start()
     {
         blobAsset = new BlobAssetStore();
@@ -60,15 +62,13 @@ public class Spawner : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             SpawnObstacle();
-            InstantiateEntityGridTest(xSize, ySize, spacing);
-            counter += xSize * ySize;
-            counterText.text = counter.ToString();
+         //   InstantiateEntityGridTest(xSize, ySize, spacing);
             ObstacleToEntity();
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            InstantiateEntityGrid(xSize, ySize, spacing);
+            InstantiateEntityGridTest(xSize, ySize, spacing);
         }
 
         if (Input.GetKeyDown(KeyCode.L))
@@ -114,13 +114,15 @@ public class Spawner : MonoBehaviour
         });
     }
 
-    private void InstantiateEntityGridTest(int dimX, int dimY, float spacing = 1f)
+    public void InstantiateEntityGridTest(int dimX, int dimY, float spacing = 1f)
     {
+        counter += xSize * ySize;
+        counterText.text = counter.ToString();
         for (int i = 0; i < dimX; i++)
         {
             for (int j = 0; j < dimY; j++)
             {
-                InstantiateEntity(new float3(_tempSpawnableObstacle.transform.position.x - dimX/2 + (i * spacing),_tempSpawnableObstacle.transform.position.y + 15f + ( j * spacing), 0f));
+                InstantiateEntity(new float3(_spawnPoint.position.x + (i * spacing), _spawnPoint.position.y + 15f + ( j * spacing), 0f));
             }
         }
     }
