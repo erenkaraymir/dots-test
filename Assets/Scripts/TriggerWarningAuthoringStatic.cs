@@ -80,7 +80,9 @@ public struct TriggerWarningJobStatic : ICollisionEventsJob
             {
                 Entity entityTemp = ecb.Instantiate(TriggerWarningData[entityB].EntityParticle);
                 var newScale = new Scale() { Value = .4f };
-                ecb.AddComponent(entityA,new Scale());
+                ecb.AddComponent(entityA, new Scale());
+                
+                ecb.SetComponent(entityTemp, new Translation { Value = TriggerWarningData[entityB].EntityManager.GetComponentData<LocalToWorld>(entityA).Position});
                 ecb.SetComponent(entityA, newScale);
            //     ecb.SetComponent(entityA,new Translation { Value = Vector3.zero * 25});
             }
