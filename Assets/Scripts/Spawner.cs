@@ -42,7 +42,6 @@ public class Spawner : MonoBehaviour
         {
             GameObjectConversionSettings settings = GameObjectConversionSettings.FromWorld(defaultWorld, blobAsset);
             entityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(gameObjectPrefab, settings);
-
             // spawn x by y grid of Entities
             // InstantiateEntityGrid(xSize, ySize, spacing);
         }

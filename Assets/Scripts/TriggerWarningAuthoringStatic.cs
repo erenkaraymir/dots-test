@@ -79,17 +79,11 @@ public struct TriggerWarningJobStatic : ICollisionEventsJob
             if (isBodyBCube)
             {
                 Entity entityTemp = ecb.Instantiate(TriggerWarningData[entityB].EntityParticle);
-              //  ecb.SetComponent(entityA,new PhysicsVelocity { Linear = Vector3.one * 250});
+                var newScale = new Scale() { Value = .4f };
+                ecb.AddComponent(entityA,new Scale());
+                ecb.SetComponent(entityA, newScale);
+           //     ecb.SetComponent(entityA,new Translation { Value = Vector3.zero * 25});
             }
-
-            //if (isBodyBCube)
-            //{
-            //    //TriggerWarningData[entityB].EntityManager.GetComponentData<Translation>(entityB).Value}
-            //    Debug.Log("B : ");
-            //    // ecb.DestroyEntity(entityB);  
-
-            // //   ecb.Destr
-            //}
         }
     }
 }
