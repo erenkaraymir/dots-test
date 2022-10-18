@@ -15,7 +15,7 @@ public class TriggerWarningAuthoringStatic : MonoBehaviour, IConvertGameObjectTo
     private BlobAssetStore blobAsset;
     private World defaultWorld;
     private EntityManager entityManager;
-    private Translation objTransform;
+    private float3 objTransform;
 
     bool _isCompelete = false;
 
@@ -44,6 +44,7 @@ public class TriggerWarningAuthoringStatic : MonoBehaviour, IConvertGameObjectTo
             GameObjectConversionSettings settings = GameObjectConversionSettings.FromWorld(defaultWorld, blobAsset);
             entityParticle = GameObjectConversionUtility.ConvertGameObjectHierarchy(particlePrefab, settings);
             Debug.Log("s");
+            objTransform = transform.position;
             _isCompelete = true;
             // spawn x by y grid of Entities
             // InstantiateEntityGrid(xSize, ySize, spacing);
@@ -56,7 +57,7 @@ public struct TriggerWarningStatic : IComponentData
     public FixedString4096Bytes Message;
     public Entity EntityParticle;
     public EntityManager EntityManager;
-    public Translation ObjTransform;
+    public float3 ObjTransform;
     
 }
 
@@ -71,7 +72,7 @@ public struct TriggerWarningJobStatic : ICollisionEventsJob
     {
         Entity entityA = collisionEvent.EntityA;
         Entity entityB = collisionEvent.EntityB;
-        if (entityA != Entity.Null && entityB != Entity.Null)
+        if (entityA != Entity.Null && entityB != Entity.Null) 
         {
             //bool isBodyACube = TriggerWarningData.HasComponent(entityA);
             bool isBodyBCube = TriggerWarningData.HasComponent(entityB);
@@ -79,10 +80,10 @@ public struct TriggerWarningJobStatic : ICollisionEventsJob
             if (isBodyBCube)
             {
                 Entity entityTemp = ecb.Instantiate(TriggerWarningData[entityB].EntityParticle);
-                var newScale = new Scale() { Value = .4f };
+                ecb.SetComponent(entityTemp, new Translation { Value = TriggerWarningData[entityB].ObjTransform});
+
+                var newScale = new Scale() { Value = .8f };
                 ecb.AddComponent(entityA, new Scale());
-                
-                ecb.SetComponent(entityTemp, new Translation { Value = TriggerWarningData[entityB].EntityManager.GetComponentData<LocalToWorld>(entityA).Position});
                 ecb.SetComponent(entityA, newScale);
            //     ecb.SetComponent(entityA,new Translation { Value = Vector3.zero * 25});
             }
